@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "xml-flow",
+            "script": "./src/xml-flow.js",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        {
+            "name": "xml-stream",
+            "script": "./src/xml-stream.js",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}

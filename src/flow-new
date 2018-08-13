@@ -1,0 +1,29 @@
+var request = require("request");
+var XmlFlow = require('xml-flow');
+var db = require("./db");
+
+function init(error) {
+    let count = 0;
+    var flow = new XmlFlow(request.get("http://192.168.1.135:8080/nj_jivox.xml"), "utf-8");
+
+    flow.on('tag:listing', function (listing) {
+        if (++count % 500 === 0) {
+            console.log("XML-FLOW - ", count);
+        }
+        db.insert([item], (error, records) => {
+            if (error) {
+                console.error(error);
+            }
+        })
+    });
+
+    flow.on("end", () => {
+        console.log("XML-FLOW parsing finished!");
+    });
+
+    flow.on("error", () => {
+        console.log("XML-FLOW ERROR OCCURRED!");
+    });
+}
+
+db.connect("mongodb://localhost/xml-flow-test", init);

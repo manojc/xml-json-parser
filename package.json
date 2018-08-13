@@ -1,0 +1,28 @@
+{
+  "name": "xml-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manojc/xml-parser.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manojc/xml-parser/issues"
+  },
+  "homepage": "https://github.com/manojc/xml-parser#readme",
+  "dependencies": {
+    "mongoose": "^5.2.7",
+    "request": "^2.88.0",
+    "xml-flow": "^1.0.2",
+    "xml-stream": "^0.4.5"
+  },
+  "devDependencies": {
+    "@types/request": "^2.47.1"
+  }
+}
