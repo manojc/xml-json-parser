@@ -3,7 +3,7 @@ const previewSchema = require("./schema");
 
 function connect(url, callback) {
     mongoose
-        .connect(url).then(() => {
+        .connect(url, { useNewUrlParser: true }).then(() => {
             if (callback && typeof callback === "function") {
                 callback();
             }
@@ -37,7 +37,7 @@ function insert(records, callback) {
             }
             return;
         }
-        return callback(docs);
+        return callback(null, docs);
     });
 
 }
