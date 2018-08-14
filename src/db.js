@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
-const previewSchema = require("./schema");
+const previewSchema = require("./previews-schema");
+const filesSchema = require("./files-schema");
+
+let fileId = "";
 
 function connect(url, callback) {
     mongoose
         .connect(url, { useNewUrlParser: true })
         .then(() => {
-            deleteCollection(callback);
+            if (callback && typeof callback === "function") {
+                callback();
+            }
         })
         .catch((error) => {
             if (callback && typeof callback === "function") {
@@ -14,7 +19,21 @@ function connect(url, callback) {
         });
 }
 
-function insert(records, callback) {
+function upsertFile(fileUrl, callback) {
+    filesSchema.fileCollection.findOneAndUpdate(
+        { url: fileUrl },
+        { url: fileUrl },
+        { upsert: true, new: true },
+        (error, doc) => {
+            if (error) {
+                return callback(error);
+            }
+            fileId = doc._id.toString();
+            return deleteCollection(callback);
+        });
+}
+
+function insertRecords(records, callback) {
     if (!records || !records.length) {
         if (callback && typeof callback === "function") {
             callback();
@@ -29,7 +48,9 @@ function insert(records, callback) {
         return previews;
     }, []);
 
-    previewSchema.previewCollection.insertMany(previews, (error, docs) => {
+    const previewCollection = previewSchema.previewCollection(fileId);
+
+    previewCollection.insertMany(previews, (error, docs) => {
         if (error) {
             if (callback && typeof callback === "function") {
                 callback(error);
@@ -42,7 +63,7 @@ function insert(records, callback) {
 }
 
 function deleteCollection(callback) {
-    mongoose.connection.db.dropCollection("previews", (error, result) => {
+    mongoose.connection.db.dropCollection(`previews_${fileId}`, (error, result) => {
         if (callback && typeof callback === "function") {
             callback();
         }
@@ -51,5 +72,6 @@ function deleteCollection(callback) {
 
 module.exports = {
     connect: connect,
-    insert: insert
+    upsertFile: upsertFile,
+    insertRecords: insertRecords
 };

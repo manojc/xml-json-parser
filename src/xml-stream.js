@@ -4,6 +4,7 @@ var db = require("./db");
 
 let items = [];
 let count = 0;
+const fileUrl = "http://192.168.1.135:8080/nj_jivox.xml";
 
 function init(error) {
     if (error) {
@@ -11,37 +12,44 @@ function init(error) {
         return;
     }
 
-    var stream = new XmlStream(request.get("http://192.168.1.135:8080/nj_jivox.xml"), "utf-8");
-
-    stream.on('endElement:listing', function (item) {
-        items.push(item);
-        if (++count % 500 !== 0) {
+    db.upsertFile(fileUrl, (error) => {
+        if (error) {
+            console.log(error);
             return;
         }
-        stream.pause();
-        console.log("XML-STREAM - ", count);
-        db.insert(items, (error, records) => {
-            if (error) {
-                console.error(error);
-            }
-            items = [];
-            stream.resume();
-        });
-    });
 
-    stream.on("end", () => {
-        console.log("XML-STREAM parsing finished!");
-        if (items && items.length) {
-            db.insert(items, (error, records) => {
+        var stream = new XmlStream(request.get(fileUrl), "utf-8");
+
+        stream.on('endElement:listing', function (item) {
+            items.push(item);
+            if (++count % 500 !== 0) {
+                return;
+            }
+            stream.pause();
+            console.log("XML-STREAM - ", count);
+            db.insertRecords(items, (error, records) => {
                 if (error) {
                     console.error(error);
                 }
+                items = [];
+                stream.resume();
             });
-        }
-    });
+        });
 
-    stream.on("error", () => {
-        console.log("XML-STREAM ERROR OCCURRED!");
+        stream.on("end", () => {
+            console.log("XML-STREAM parsing finished!");
+            if (items && items.length) {
+                db.insertRecords(items, (error, records) => {
+                    if (error) {
+                        console.error(error);
+                    }
+                });
+            }
+        });
+
+        stream.on("error", () => {
+            console.log("XML-STREAM ERROR OCCURRED!");
+        });
     });
 }
 
