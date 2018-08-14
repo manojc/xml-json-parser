@@ -1,11 +1,11 @@
 var request = require("request");
 var XmlFlow = require('xml-flow');
 var db = require("./db/db");
+const files = require("./files");
 
 let items = [];
 let count = 0;
 let flow = null;
-const fileUrl = "http://192.168.1.135:8080/nj_jivox.xml";
 
 function onData(item) {
     items.push(item);
@@ -38,20 +38,20 @@ function onError() {
     console.log("XML-FLOW ERROR OCCURRED!"); 
 }
 
-function initStream() {
+function initStream(fileUrl) {
     flow = new XmlFlow(request.get(fileUrl));
     flow.on('tag:listing', onData);
     flow.on("end", onEnd);
     flow.on("error", onError);    
 }
 
-function processFile() {
+function processFile(fileUrl) {
     db.upsertFile(fileUrl, (error) => {
         if (error) {
             console.log(error);
             return;
         }
-        initStream();
+        initStream(fileUrl);
     });
 }
 
@@ -59,8 +59,8 @@ function init(error) {
     if (error) {
         console.log(error);
         return;
-    }
-    processFile();
+    }    
+    files.forEach(file => processFile(file));
 }
 
 db.connect("mongodb://localhost:27017/xml-flow-test", init);

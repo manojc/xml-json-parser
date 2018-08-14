@@ -1,11 +1,11 @@
-var request = require("request");
-var XmlStream = require('xml-stream');
-var db = require("./db/db");
+const request = require("request");
+const XmlStream = require('xml-stream');
+const db = require("./db/db");
+const files = require("./files");
 
 let items = [];
 let count = 0;
 let stream = null;
-const fileUrl = "http://192.168.1.135:8080/nj_jivox.xml";
 
 function onData(item) {
     items.push(item);
@@ -38,20 +38,20 @@ function onError() {
     console.log("XML-STREAM ERROR OCCURRED!");    
 }
 
-function initStream() {
+function initStream(fileUrl) {
     stream = new XmlStream(request.get(fileUrl), "utf-8");
     stream.on('endElement:listing', onData);
     stream.on("end", onEnd);
     stream.on("error", onError);    
 }
 
-function processFile() {
+function processFile(fileUrl) {
     db.upsertFile(fileUrl, (error) => {
         if (error) {
             console.log(error);
             return;
         }
-        initStream();
+        initStream(fileUrl);
     });
 }
 
@@ -60,7 +60,7 @@ function init(error) {
         console.log(error);
         return;
     }
-    processFile();
+    files.forEach(file => processFile(file));
 }
 
 db.connect("mongodb://localhost:27017/xml-stream-test", init);
