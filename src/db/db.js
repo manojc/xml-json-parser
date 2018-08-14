@@ -26,7 +26,7 @@ function upsertFile(fileUrl, callback) {
         { upsert: true, new: true },
         (error, doc) => {
             if (error) {
-                return callback(error);
+                return callback(error, null);
             }
             fileId = doc._id.toString();
             return deleteCollection(callback);
@@ -65,7 +65,7 @@ function insertRecords(records, callback) {
 function deleteCollection(callback) {
     mongoose.connection.db.dropCollection(`previews_${fileId}`, (error, result) => {
         if (callback && typeof callback === "function") {
-            callback();
+            callback(null, fileId);
         }
     });
 }
