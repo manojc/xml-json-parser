@@ -3,7 +3,8 @@ const previewSchema = require("./schema");
 
 function connect(url, callback) {
     mongoose
-        .connect(url, { useNewUrlParser: true }).then(() => {
+        .connect(url, { useNewUrlParser: true })
+        .then(() => {
             if (callback && typeof callback === "function") {
                 callback();
             }
@@ -29,7 +30,7 @@ function insert(records, callback) {
         });
         return previews;
     }, []);
-    
+
     previewSchema.previewCollection.insertMany(previews, (error, docs) => {
         if (error) {
             if (callback && typeof callback === "function") {
@@ -42,7 +43,7 @@ function insert(records, callback) {
 
 }
 
-module.exports = { 
-    connect: connect, 
-    insert: insert 
+module.exports = {
+    connect: connect,
+    insert: insert
 };

@@ -6,13 +6,6 @@
             "env": {
                 "NODE_ENV": "development"
             }
-        },
-        {
-            "name": "xml-stream",
-            "script": "./src/xml-stream.js",
-            "env": {
-                "NODE_ENV": "development"
-            }
         }
     ]
 }
