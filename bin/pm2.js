@@ -39,7 +39,7 @@ if (process.argv && process.argv.length > 2) {
             command = "pm2 delete pm2-xml-flow.json pm2-xml-stream.json";
             break;
         case "help":
-            printCommandDetails();
+            return printCommandDetails();
             break;
         default:
             break;
