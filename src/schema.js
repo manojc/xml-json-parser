@@ -9,5 +9,5 @@ const PreviewSchema = new mongoose.Schema({
 
 module.exports = { 
     PreviewSchema: PreviewSchema, 
-    previewCollection: mongoose.model("preview", PreviewSchema, "preview") 
+    previewCollection: mongoose.model("previews", PreviewSchema, "previews") 
 };

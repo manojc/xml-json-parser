@@ -5,9 +5,7 @@ function connect(url, callback) {
     mongoose
         .connect(url, { useNewUrlParser: true })
         .then(() => {
-            if (callback && typeof callback === "function") {
-                callback();
-            }
+            deleteCollection(callback);
         })
         .catch((error) => {
             if (callback && typeof callback === "function") {
@@ -41,6 +39,14 @@ function insert(records, callback) {
         return callback(null, docs);
     });
 
+}
+
+function deleteCollection(callback) {
+    mongoose.connection.db.dropCollection("previews", (error, result) => {
+        if (callback && typeof callback === "function") {
+            callback();
+        }
+    });
 }
 
 module.exports = {
