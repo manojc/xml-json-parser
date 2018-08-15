@@ -1,9 +1,10 @@
 var request = require("request");
-var XmlFlow = require('xml-flow');
+var xmlFlow = require('xml-flow');
 var db = require("./db/db");
 const files = require("./files");
 
 let items = [];
+let testCount = 0;
 let count = 0;
 let fileIndex = -1;
 let flow = null;
@@ -14,35 +15,43 @@ function processNextFile() {
     if (files && files[fileIndex] && typeof files[fileIndex] === "object") {
         if (!!files[fileIndex].url && !!files[fileIndex].rootNode) {
             console.log(`\n\n\nprocessing file ${files[fileIndex].url}\n\n\n`);
-            processFile(files[fileIndex]);            
+            processFile(files[fileIndex]);
         }
     }
 }
 
 function onData(item) {
+    ++testCount;
     items.push(item);
-    if (++count % 500 !== 0) {
+    if (items.length % 500 !== 0) {
         return;
     }
-    const dbItems = [...items];
+    flow.pause();
+    count += items.length;
+    let dbitems = [...items];
     items = [];
-    console.log("XML-FLOW - ", count);
-    db.insertRecords(dbItems, (error, records) => {
+    db.insertRecords(dbitems, (error, records) => {
         if (error) {
             console.error(error);
         }
+        console.log("XML-FLOW - ", count);
+        flow.resume();
     });
 }
 
 function onEnd() {
     console.log("XML-FLOW parsing finished!");
     if (!items || !items.length) {
+        count += items.length;
+        console.log("final counts are - ", count, testCount);
         return processNextFile();
     }
     db.insertRecords(items, (error, records) => {
         if (error) {
             console.error(error);
         }
+        count += items.length;
+        console.log("final counts are - ", count, testCount);
         processNextFile();
     });
 }
@@ -52,7 +61,7 @@ function onError() {
 }
 
 function initStream(fileObj) {
-    flow = new XmlFlow(request.get(fileObj.url), { cdataAsText: true, strict: true });
+    flow = xmlFlow(request.get(fileObj.url), { cdataAsText: true, strict: true });
     flow.on(`tag:${fileObj.rootNode}`, onData);
     flow.on("end", onEnd);
     flow.on("error", onError);

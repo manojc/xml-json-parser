@@ -5,6 +5,7 @@ const files = require("./files");
 
 let items = [];
 let count = 0;
+let testCount = 0;
 let fileIndex = -1;
 let stream = null;
 
@@ -14,12 +15,13 @@ function processNextFile() {
     if (files && files[fileIndex] && typeof files[fileIndex] === "object") {
         if (!!files[fileIndex].url && !!files[fileIndex].rootNode) {
             console.log(`\n\n\nprocessing file ${files[fileIndex].url}\n\n\n`);
-            processFile(files[fileIndex]);            
+            processFile(files[fileIndex]);
         }
     }
 }
 
 function onData(item) {
+    ++testCount;
     items.push(item);
     if (++count % 500 !== 0) {
         return;
@@ -38,6 +40,8 @@ function onData(item) {
 function onEnd() {
     console.log("XML-STREAM parsing finished!");
     if (!items || !items.length) {
+        count += items.length;
+        console.log("final counts are - ", count, testCount);
         return processNextFile();
     }
     if (items && items.length) {
@@ -45,7 +49,9 @@ function onEnd() {
             if (error) {
                 console.error(error);
             }
-            processNextFile();
+            count += items.length;
+            console.log("final counts are - ", count, testCount);
+            return processNextFile();
         });
     }
 }
