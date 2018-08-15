@@ -62,7 +62,6 @@ function onError() {
 
 function initStream(fileObj) {
     stream = new XmlStream(request.get(fileObj.url), "utf-8");
-    stream.preserve(fileObj.rootNode);
     stream.on(`endElement:${fileObj.rootNode}`, onData);
     stream.on("end", onEnd);
     stream.on("error", onError);
