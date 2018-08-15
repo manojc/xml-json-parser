@@ -23,6 +23,16 @@
                 "${workspaceFolder}/**/*.js"
             ],
             "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "json-stream",
+            "program": "${workspaceFolder}/src/json-stream.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "internalConsole"
         }
     ]
 }

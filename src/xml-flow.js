@@ -1,6 +1,6 @@
-var request = require("request");
-var xmlFlow = require('xml-flow');
-var db = require("./db/db");
+const request = require("request");
+const xmlFlow = require('xml-flow');
+const db = require("./db/db");
 const files = require("./files");
 
 let items = [];

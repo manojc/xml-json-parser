@@ -62,6 +62,18 @@ function insertRecords(records, callback) {
 
 }
 
+function dumpRecordsInFile(fileId, limit, skip, callback) {
+    const previewCollection = previewSchema.previewCollection(fileId);
+    previewCollection
+        .find({})
+        .limit(limit)
+        .skip(skip)
+        .then(docs => {
+            callback(null, docs);
+        })
+        .catch(error => { throw error });
+}
+
 function deleteCollection(callback) {
     mongoose.connection.db.dropCollection(`previews_${fileId}`, (error, result) => {
         if (callback && typeof callback === "function") {
@@ -73,5 +85,6 @@ function deleteCollection(callback) {
 module.exports = {
     connect: connect,
     upsertFile: upsertFile,
-    insertRecords: insertRecords
+    insertRecords: insertRecords,
+    dumpRecordsInFile: dumpRecordsInFile
 };
