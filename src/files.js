@@ -11,6 +11,8 @@ module.exports = {
     ],
     json: [
         { rootNode: "VehicleRemarketing", url: "http://192.168.1.135:8080/boats.json" },
-        // { rootNode: "data", url: "http://192.168.1.135:8080/data.json" }
+        { rootNode: "data", url: "http://192.168.1.135:8080/data.json" },
+        { rootNode: "product", url: "http://192.168.1.135:8080/feeds.json" },
+        { rootNode: "*", url: "http://192.168.1.135:8080/array.json" },
     ]
 };

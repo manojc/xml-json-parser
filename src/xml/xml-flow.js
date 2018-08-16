@@ -1,7 +1,7 @@
 const request = require("request");
 const xmlFlow = require('xml-flow');
-const db = require("./db/db");
-const files = require("./files");
+const db = require("../db/db");
+const files = require("../files");
 
 let items = [];
 let testCount = 0;

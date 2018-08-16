@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "xml-flow",
-            "program": "${workspaceFolder}/src/xml-flow.js",
+            "program": "${workspaceFolder}/src/xml/xml-flow.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ],
@@ -18,7 +18,7 @@
             "type": "node",
             "request": "launch",
             "name": "xml-stream",
-            "program": "${workspaceFolder}/src/xml-stream.js",
+            "program": "${workspaceFolder}/src/xml/xml-stream.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ],
@@ -28,7 +28,37 @@
             "type": "node",
             "request": "launch",
             "name": "json-stream",
-            "program": "${workspaceFolder}/src/json-stream.js",
+            "program": "${workspaceFolder}/src/json/json-stream.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "stream-json",
+            "program": "${workspaceFolder}/src/json/stream-json.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "clarinet",
+            "program": "${workspaceFolder}/src/json/clarinet.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "feedback transform",
+            "program": "${workspaceFolder}/src/utils/transform-json.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ],

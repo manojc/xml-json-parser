@@ -1,7 +1,7 @@
 const request = require("request");
 const XmlStream = require('xml-stream');
-const db = require("./db/db");
-const files = require("./files");
+const db = require("../db/db");
+const files = require("../files");
 
 let items = [];
 let count = 0;
