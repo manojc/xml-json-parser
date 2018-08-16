@@ -10,7 +10,7 @@ module.exports = {
         // { rootNode: "order", url: "http://192.168.1.135:8080/orders.xml" }
     ],
     json: [
-        // { rootNode: "VehicleRemarketing", url: "http://192.168.1.135:8080/boats.json" },
-        { rootNode: "data", url: "http://192.168.1.135:8080/data.json" }
+        { rootNode: "VehicleRemarketing", url: "http://192.168.1.135:8080/boats.json" },
+        // { rootNode: "data", url: "http://192.168.1.135:8080/data.json" }
     ]
 };

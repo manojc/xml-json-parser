@@ -22,12 +22,14 @@
         "event-stream": "^3.3.4",
         "mongoose": "^5.2.7",
         "request": "^2.88.0",
+        "stream-json": "^1.1.1",
         "xml-flow": "^1.0.2",
         "xml-stream": "^0.4.5"
     },
     "devDependencies": {
         "@types/event-stream": "^3.3.34",
         "@types/request": "^2.47.1",
+        "@types/stream-json": "^1.0.0",
         "shelljs": "^0.8.2"
     }
 }

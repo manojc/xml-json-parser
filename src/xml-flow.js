@@ -12,10 +12,10 @@ let flow = null;
 function processNextFile() {
     count = 0;
     ++fileIndex;
-    if (files && files[fileIndex] && typeof files[fileIndex] === "object") {
-        if (!!files[fileIndex].url && !!files[fileIndex].rootNode) {
-            console.log(`\n\n\nprocessing file ${files[fileIndex].url}\n\n\n`);
-            processFile(files[fileIndex]);
+    if (files && files.xml && files.xml[fileIndex] && typeof files.xml[fileIndex] === "object") {
+        if (!!files.xml[fileIndex].url && !!files.xml[fileIndex].rootNode) {
+            console.log(`\n\n\nprocessing file ${files.xml[fileIndex].url}\n\n\n`);
+            processFile(files.xml[fileIndex]);
         }
     }
 }
