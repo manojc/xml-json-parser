@@ -59,7 +59,6 @@ function insertRecords(records, callback) {
         }
         return callback(null, docs);
     });
-
 }
 
 function dumpRecordsInFile(fileId, limit, skip, callback) {

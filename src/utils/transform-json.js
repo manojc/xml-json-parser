@@ -1,29 +1,31 @@
-const stream = require("stream");
+const Transform = require("stream").Transform;
 
-const virtualNode = "__data__";
+const virtualNode = "__virtual_data_node__";
+let previousChunk = null;
 
-function buildTransform() {
-    let previousChunk = null;
-    const transformStream = new stream.Transform();
-    transformStream._transform = function (data, encoding, callback) {
-        const rootTag = !previousChunk ? `{ \n\t"${virtualNode}": [` : "";
-        if (previousChunk) {
-            this.push(previousChunk);
-        }
-        previousChunk = `${rootTag}${data.toString()}`;
-        callback();
+function _transform(data, encoding, callback) {
+    const rootTag = !previousChunk ? `{ \n\t"${virtualNode}": [` : "";
+    if (previousChunk) {
+        this.push(previousChunk);
     }
-    transformStream._flush = function (callback) {
-        if (previousChunk) {
-            this.push(`${previousChunk}\n]}`);
-            previousChunk = null;
-        }
-        callback();
+    previousChunk = `${rootTag}${data.toString()}`;
+    callback();
+}
+
+function _flush(callback) {
+    if (previousChunk) {
+        this.push(`${previousChunk}\n]}`);
+        previousChunk = null;
     }
-    return transformStream;
+    callback();
+}
+
+function _buildTransform() {
+    previousChunk = null;
+    return new Transform({ transform: _transform, flush: _flush });
 }
 
 module.exports = {
-    transform: buildTransform(),
+    transform: _buildTransform(),
     virtualNode: virtualNode
-}
+};
