@@ -27,11 +27,12 @@ function onData(item) {
         return;
     }
     stream.pause();
-    console.log("XML-STREAM - ", count);
+    count += items.length;
     db.insertRecords(items, (error, records) => {
         if (error) {
             console.error(error);
         }
+        console.log("XML-STREAM - ", count);
         items = [];
         stream.resume();
     });
@@ -62,6 +63,7 @@ function onError() {
 
 function initStream(fileObj) {
     stream = new XmlStream(request.get(fileObj.url), "utf-8");
+    stream.collect('subitem');
     stream.on(`endElement:${fileObj.rootNode}`, onData);
     stream.on("end", onEnd);
     stream.on("error", onError);

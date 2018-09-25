@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "xml-flow",
-            "script": "./src/xml-flow.js",
+            "script": "./src/xml/xml-flow.js",
             "env": {
                 "NODE_ENV": "development"
             }
