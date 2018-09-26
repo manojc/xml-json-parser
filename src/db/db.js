@@ -36,7 +36,7 @@ function upsertFile(fileUrl, callback) {
 function insertRecords(records, callback) {
     if (!records || !records.length) {
         if (callback && typeof callback === "function") {
-            callback();
+            callback(null, []);
         }
         return;
     }
