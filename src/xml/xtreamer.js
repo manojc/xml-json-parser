@@ -1,4 +1,4 @@
-const { Writable } = require("stream")
+const { Transform } = require("stream")
 const request = require("request");
 const xtreamer = require('xtreamer');
 const xmlParser = require('xml-js');
@@ -7,16 +7,16 @@ const db = require("../db/db");
 let _nodes = [];
 let _count = 0;
 
-class XtreamerClient extends Writable {
+class XtreamerClient extends Transform {
 
     constructor() {
         super();
         this._count = 0;
-        this._count1 = 0;
         this._nodes = [];
+        this.once("end", this._end);
     }
 
-    async _write(chunk, encoding, next) {
+    async _transform(chunk, encoding, next) {
         this._nodes.push(this._parse(chunk.toString()));
         if (this._nodes.length % 1000 !== 0) {
             return next();
@@ -32,9 +32,13 @@ class XtreamerClient extends Writable {
         }
     }
 
-    _final(callback) {
-        console.log("final blow!");
-        callback();
+    async _end() {
+        if (this._nodes && this._nodes.length) {
+            const records = await db.insertRecords(this._nodes);
+            this._nodes = [];
+            this._count += records.length;
+            console.log(`records processed - ${this._count}`);
+        }
     }
 
     _parse(xmlText) {
