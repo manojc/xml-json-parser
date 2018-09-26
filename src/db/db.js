@@ -38,7 +38,7 @@ function insertRecords(records, callback) {
         if (callback && typeof callback === "function") {
             return callback(null, []);
         }
-        return [];
+        return Promise.resolve([]);
     }
 
     const previews = records.reduce((previews, record, index) => {
