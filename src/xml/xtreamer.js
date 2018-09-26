@@ -28,7 +28,7 @@ class XtreamerClient extends Writable {
         }
     }
 
-    async _flush(callback) {
+    async _final(callback) {
         try {
             const records = await db.insertRecords(this._nodes);
             this._nodes = [];
