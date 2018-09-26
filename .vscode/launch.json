@@ -27,6 +27,16 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "xtreamer",
+            "program": "${workspaceFolder}/src/xml/xtreamer.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "internalConsole"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "json-stream",
             "program": "${workspaceFolder}/src/json/json-stream.js",
             "outFiles": [

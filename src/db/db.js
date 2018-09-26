@@ -36,9 +36,9 @@ function upsertFile(fileUrl, callback) {
 function insertRecords(records, callback) {
     if (!records || !records.length) {
         if (callback && typeof callback === "function") {
-            callback(null, []);
+            return callback(null, []);
         }
-        return;
+        return [];
     }
 
     const previews = records.reduce((previews, record, index) => {
@@ -50,15 +50,11 @@ function insertRecords(records, callback) {
 
     const previewCollection = previewSchema.previewCollection(fileId);
 
-    previewCollection.insertMany(previews, (error, docs) => {
-        if (error) {
-            if (callback && typeof callback === "function") {
-                callback(error);
-            }
-            return;
-        }
-        return callback(null, docs);
-    });
+    if (callback && typeof callback === "function") {
+        previewCollection.insertMany(previews, callback);
+    }
+
+    return previewCollection.insertMany(previews);
 }
 
 function dumpRecordsInFile(fileId, limit, skip, callback) {

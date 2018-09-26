@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "xtreamer",
+            "script": "./src/xml/xtreamer.js",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}
